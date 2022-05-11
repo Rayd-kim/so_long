@@ -23,6 +23,7 @@ typedef struct s_elements
 	int	c;
 	int	e;
 	int	p;
+	int	slime[2];
 }		t_elements;
 
 typedef struct s_image
@@ -37,6 +38,19 @@ typedef struct s_image
 	int		y;
 }		t_image;
 
+typedef struct s_enemy
+{
+	void	*slime1;
+	void	*slime2;
+	void	*slime3;
+	void	*slime4;
+	void	*slime5;
+	void	*slime6;
+	void	*slime7;
+	int		x;
+	int		y;
+}		t_enemy;
+
 typedef struct s_param
 {
 	struct s_elements	*elements;
@@ -44,20 +58,17 @@ typedef struct s_param
 	void				*mlx_ptr;
 	void				*win_ptr;
 	struct s_image		*img;
+	struct s_enemy		*enemy;
 	int					p_xy[2];
 }		t_param;
 
 void		make_map(char *argv, t_param *param);
 char		**check_map(int fd, t_elements *elements);
+void		error_stdin(void);
 t_image		*open_image(void *mlx_ptr);
 t_elements	*make_elements(void);
 t_param		*make_param(void);
+t_enemy		*make_enemy(void *mlx);
 void		print_map(t_param *param);
 void		print_map2(t_param *param);
-
-void		error_stdin(void);
-void		error_null(void);
-void		error_component(void);
-void		error_rectangular(void);
-void		error_wall(void);
 #endif

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   so_long_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 13:21:58 by youskim           #+#    #+#             */
-/*   Updated: 2022/05/10 19:56:52 by youskim          ###   ########.fr       */
+/*   Updated: 2022/05/10 18:16:14 by youskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	check_position(int keycode, t_param *param, int	*x, int *y)
 {
@@ -37,7 +37,7 @@ int	check_position(int keycode, t_param *param, int	*x, int *y)
 	return (0);
 }
 
-void	key_press2(t_param *param, int x, int y, int *count)
+void	print_count(int *count, t_param *param)
 {
 	char	*count_itoa;
 
@@ -45,7 +45,12 @@ void	key_press2(t_param *param, int x, int y, int *count)
 	count_itoa = ft_itoa(*count);
 	write (1, count_itoa, ft_strlen(count_itoa));
 	write (1, "\n", 1);
+	mlx_string_put(param->mlx_ptr, param->win_ptr, 32, 32, 0, count_itoa);
 	free (count_itoa);
+}
+
+void	key_press2(t_param *param, int x, int y)
+{
 	param->p_xy[0] = x;
 	param->p_xy[1] = y;
 	print_map2(param);
@@ -62,15 +67,16 @@ int	key_press(int keycode, t_param *param)
 	y = param->p_xy[1];
 	check = check_position(keycode, param, &x, &y);
 	if (check >= 2)
-		key_press2(param, x, y, &count);
+	{
+		key_press2(param, x, y);
+		print_count(&count, param);
+	}
 	else if (check == 1)
 	{
-		key_press2(param, x, y, &count);
+		print_count(&count, param);
 		if (param->elements->c == 0)
-		{
-			write (1, "SUCCESS!!\n",10);
 			exit(0);
-		}
+		key_press2(param, x, y);
 	}
 	return (0);
 }
@@ -79,6 +85,44 @@ int	program_exit(t_param *param)
 {
 	mlx_destroy_window(param->mlx_ptr, param->win_ptr);
 	exit(0);
+}
+
+void	draw_slime(t_param *param, void *map, void *slime)
+{
+	void	*mlx;
+	void	*win;
+	int		x;
+	int		y;
+
+	mlx = param->mlx_ptr;
+	win = param->win_ptr;
+	x = param->elements->slime[0];
+	y = param->elements->slime[1];
+	mlx_put_image_to_window(mlx, win, map, x * 64, y * 64);
+	mlx_put_image_to_window(mlx, win, slime, x * 64, y * 64);
+}
+
+int	nothing(t_param *param)
+{
+	static int	k = 1;
+	int	t = 1000;
+
+	if (k % (t * 7) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime7);
+	else if (k % (t * 6) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime6);
+	else if (k % (t * 5) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime5);
+	else if (k % (t * 4) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime4);
+	else if (k % (t * 3) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime3);
+	else if (k % (t * 2) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime2);
+	else if (k % (t * 1) == 0)
+		draw_slime(param, param->img->map, param->enemy->slime1);
+	k++;
+	return (0);
 }
 
 int	main(int argc, char *argv[])
@@ -94,9 +138,11 @@ int	main(int argc, char *argv[])
 	param->win_ptr = mlx_new_window(param->mlx_ptr, \
 	param->elements->map_w * 64, param->elements->map_h * 64, argv[argc - 1]);
 	param->img = open_image(param->mlx_ptr);
+	param->enemy = make_enemy(param->mlx_ptr);
 	print_map(param);
 	mlx_hook(param->win_ptr, 2, 0, &key_press, param);
 	mlx_hook(param->win_ptr, 17, 0, &program_exit, param);
+	mlx_loop_hook(param->mlx_ptr, &nothing, param);
 	mlx_loop(param->mlx_ptr);
 	return (0);
 }
