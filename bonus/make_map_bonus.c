@@ -94,6 +94,11 @@ char	**check_map(int fd, t_elements *elements)
 		error_null();
 	elements->map_h = 1;
 	check_map2(elements, map);
+	if (elements->map_w > 40 || elements->map_h > 21)
+	{
+		write (2, "Error\nMap too big\n", 18);
+		exit (1);
+	}
 	real_map = ft_split(map, '\n');
 	check_wall(real_map, elements);
 	return (real_map);
