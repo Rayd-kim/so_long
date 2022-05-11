@@ -23,9 +23,14 @@ static void	print_bg(t_param *param)
 		k = 0;
 		while (k < param->elements->map_h)
 		{
-			mlx_put_image_to_window(param->mlx_ptr, \
-			param->win_ptr, param->img->map, i * 64, k * 64);
-			k++;
+			if (param->map[k][i] == 'S')
+				k++;
+			else
+			{
+				mlx_put_image_to_window(param->mlx_ptr, \
+				param->win_ptr, param->img->map, i * 64, k * 64);
+				k++;
+			}
 		}
 		i++;
 	}
@@ -40,7 +45,17 @@ static void	print_img(t_param *param, void *img, int x, int y)
 	win = param->win_ptr;
 	mlx_put_image_to_window(mlx, win, img, x * 64, y * 64);
 }
-
+/*
+static void	print_map_assis(t_param *param, int i, int k)
+{
+	if (param->map[i][k] == '1')
+		print_img(param, param->img->wall, k, i);
+	else if (param->map[i][k] == 'E')
+		print_img(param, param->img->exit, k, i);
+	else if (param->map[i][k] == 'C')
+		print_img(param, param->img->goal, k, i);
+}
+*/
 void	print_map(t_param *param)
 {
 	int		i;
@@ -63,14 +78,11 @@ void	print_map(t_param *param)
 			{
 				param->p_xy[0] = k;
 				param->p_xy[1] = i;
-				print_img(param, param->img->player, \
-				param->p_xy[0], param->p_xy[1]);
+				param->map[i][k] = '0';
+				print_img(param, param->img->player, k, i);
 			}
 			else if (param->map[i][k] == 'S')
-			{
-				param->elements->slime[0] = k;
-				param->elements->slime[1] = i;
-			}
+				slime_check(param, i, k);
 		}
 	}
 }
@@ -93,11 +105,10 @@ void	print_map2(t_param *param)
 				print_img(param, param->img->exit, k, i);
 			else if (param->map[i][k] == 'C')
 				print_img(param, param->img->goal, k, i);
-			else if (param->map[i][k] == 'P')
-				print_img(param, param->img->player, \
-				param->p_xy[0], param->p_xy[1]);
 			k++;
 		}
 		i++;
 	}
+	print_img(param, param->img->player, \
+	param->p_xy[0], param->p_xy[1]);
 }

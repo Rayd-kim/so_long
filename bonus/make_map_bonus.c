@@ -38,36 +38,34 @@ void	check_wall(char	**map, t_elements *elements)
 	int	i;
 	int	k;
 
+	if (map == NULL)
+		error_null();
 	if (elements->c < 1 || elements->e < 1 || elements->p != 1)
-		exit (1);
+		error_component();
 	i = 0;
 	while (map[i] != NULL)
 	{
 		k = 0;
 		if ((int)ft_strlen(map[i]) != elements->map_w)
-			exit(1);
+			error_rectangular();
 		while (map[i][k] != '\0')
 		{
 			if ((i == 0 && map[i][k] != '1' ) || \
-			(i == elements->map_h && map[i][k] != '1'))
-				exit (1);
+			(i == (elements->map_h - 1) && map[i][k] != '1'))
+				error_wall();
 			else if ((k == 0 && map[i][k] != '1' ) || \
-			(k == elements->map_w && map[i][k] != '1'))
-				exit (1);
+			(k == (elements->map_w - 1) && map[i][k] != '1'))
+				error_wall();
 			k++;
 		}
 		i++;
 	}
 }
 
-char	**check_map(int fd, t_elements *elements)
+void	check_map2(t_elements *elements, char *map)
 {
-	char		*map;
-	char		**real_map;
-	int			i;
+	int	i;
 
-	map = read_map(fd, &elements->map_w);
-	elements->map_h = 1;
 	i = 0;
 	while (map[i] != '\0')
 	{
@@ -79,8 +77,23 @@ char	**check_map(int fd, t_elements *elements)
 			elements->e += 1;
 		else if (map[i] == 'P')
 			elements->p += 1;
+		else if (map[i] == 'S')
+			elements->s += 1;
+		else if (map[i] != '0' && map[i] != '1')
+			error_component();
 		i++;
 	}
+}
+char	**check_map(int fd, t_elements *elements)
+{
+	char		*map;
+	char		**real_map;
+
+	map = read_map(fd, &elements->map_w);
+	if (map == NULL)
+		error_null();
+	elements->map_h = 1;
+	check_map2(elements, map);
 	real_map = ft_split(map, '\n');
 	check_wall(real_map, elements);
 	return (real_map);

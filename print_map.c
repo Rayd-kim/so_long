@@ -63,8 +63,8 @@ void	print_map(t_param *param)
 			{
 				param->p_xy[0] = k;
 				param->p_xy[1] = i;
-				print_img(param, param->img->player, \
-				param->p_xy[0], param->p_xy[1]);
+				param->map[i][k] = '0';
+				print_img(param, param->img->player, k, i);
 			}
 		}
 	}
@@ -88,8 +88,6 @@ void	print_map2(t_param *param)
 				print_img(param, param->img->exit, k, i);
 			else if (param->map[i][k] == 'C')
 				print_img(param, param->img->goal, k, i);
-			//else if (param->map[i][k] == 'P')
-			//	print_img(param, param->img->player, param->p_xy[0], param->p_xy[1]);
 			k++;
 		}
 		i++;

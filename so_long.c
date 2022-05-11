@@ -32,7 +32,7 @@ int	check_position(int keycode, t_param *param, int	*x, int *y)
 		param->map[*y][*x] = '0';
 		return (2);
 	}
-	else if (param->map[*y][*x] != '1')
+	else if (param->map[*y][*x] == '0')
 		return (3);
 	return (0);
 }
@@ -61,6 +61,8 @@ int	key_press(int keycode, t_param *param)
 	x = param->p_xy[0];
 	y = param->p_xy[1];
 	check = check_position(keycode, param, &x, &y);
+	if (param->elements->c == 0)
+		param->img->exit = param->img->exit_open;
 	if (check >= 2)
 		key_press2(param, x, y, &count);
 	else if (check == 1)
@@ -68,7 +70,7 @@ int	key_press(int keycode, t_param *param)
 		key_press2(param, x, y, &count);
 		if (param->elements->c == 0)
 		{
-			write (1, "SUCCESS!!\n",10);
+			write (1, "EXIT SUCCESS!!\n", 15);
 			exit(0);
 		}
 	}

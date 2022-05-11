@@ -27,9 +27,9 @@ t_image	*open_image(void *mlx_ptr)
 	img->exit = mlx_xpm_file_to_image(mlx_ptr, \
 	"./Texture/exit_close.xpm", &img->x, &img->y);
 	img->goal = mlx_xpm_file_to_image(mlx_ptr, \
-	"./Texture/box.xpm", &img->x, &img->y);
+	"./Texture/Chicken.xpm", &img->x, &img->y);
 	img->player = mlx_xpm_file_to_image(mlx_ptr, \
-	"./Texture/Player2.xpm", &img->x, &img->y);
+	"./Texture/Player.xpm", &img->x, &img->y);
 	img->exit_open = mlx_xpm_file_to_image(mlx_ptr, \
 	"./Texture/exit_open.xpm", &img->x, &img->y);
 	return (img);
@@ -63,14 +63,21 @@ t_enemy	*make_enemy(void *mlx)
 
 	enemy = (t_enemy *)malloc(sizeof(t_enemy));
 	if (enemy == 0)
-		exit (1);
+		error_stdin();
 	ft_memset(enemy, 0, sizeof(t_enemy));
-	enemy->slime1 = mlx_xpm_file_to_image(mlx, "./Texture/slime1.xpm", &enemy->x, &enemy->y);
-	enemy->slime2 = mlx_xpm_file_to_image(mlx, "./Texture/slime2.xpm", &enemy->x, &enemy->y);
-	enemy->slime3 = mlx_xpm_file_to_image(mlx, "./Texture/slime3.xpm", &enemy->x, &enemy->y);
-	enemy->slime4 = mlx_xpm_file_to_image(mlx, "./Texture/slime4.xpm", &enemy->x, &enemy->y);
-	enemy->slime5 = mlx_xpm_file_to_image(mlx, "./Texture/slime5.xpm", &enemy->x, &enemy->y);
-	enemy->slime6 = mlx_xpm_file_to_image(mlx, "./Texture/slime6.xpm", &enemy->x, &enemy->y);
-	enemy->slime7 = mlx_xpm_file_to_image(mlx, "./Texture/slime7.xpm", &enemy->x, &enemy->y);
+	enemy->slime1 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime1.xpm", &enemy->x, &enemy->y);
+	enemy->slime2 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime2.xpm", &enemy->x, &enemy->y);
+	enemy->slime3 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime3.xpm", &enemy->x, &enemy->y);
+	enemy->slime4 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime4.xpm", &enemy->x, &enemy->y);
+	enemy->slime5 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime5.xpm", &enemy->x, &enemy->y);
+	enemy->slime6 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime6.xpm", &enemy->x, &enemy->y);
+	enemy->slime7 = mlx_xpm_file_to_image(mlx, \
+	"./Texture/slime7.xpm", &enemy->x, &enemy->y);
 	return (enemy);
 }

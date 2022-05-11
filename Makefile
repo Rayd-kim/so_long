@@ -10,11 +10,12 @@ FILE = make_map.c \
 		./gnl/get_next_line.c \
 		./gnl/get_next_line_utils.c
 
-FILE_B = make_map_bonus.c \
-		so_long_bonus.c \
-		error.c \
-		make_struct_bonus.c \
-		print_map_bonus.c \
+FILE_B = ./bonus/make_map_bonus.c \
+		./bonus/so_long_bonus.c \
+		./bonus/error_bonus.c \
+		./bonus/make_struct_bonus.c \
+		./bonus/slime_bonus.c \
+		./bonus/print_map_bonus.c \
 		./gnl/get_next_line.c \
 		./gnl/get_next_line_utils.c
 
@@ -50,3 +51,5 @@ fclean : clean
 	@$(MAKE) -C ./libft fclean
 
 re : fclean all
+
+.PHONY : all clean fclean bonus re

@@ -1,10 +1,10 @@
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef SO_LONG_BONUS_H
+# define SO_LONG_BONUS_H
 
-# include "./mlx/mlx.h"
+# include <mlx.h>
 # include <stdlib.h>
-# include "./gnl/get_next_line.h"
-# include "./libft/libft.h"
+# include "../gnl/get_next_line.h"
+# include "../libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -23,7 +23,9 @@ typedef struct s_elements
 	int	c;
 	int	e;
 	int	p;
-	int	slime[2];
+	int	s;
+	int	*slime_x;
+	int	*slime_y;
 }		t_elements;
 
 typedef struct s_image
@@ -65,10 +67,18 @@ typedef struct s_param
 void		make_map(char *argv, t_param *param);
 char		**check_map(int fd, t_elements *elements);
 void		error_stdin(void);
+void		error_null(void);
+void		error_component(void);
+void		error_rectangular(void);
+void		error_wall(void);
 t_image		*open_image(void *mlx_ptr);
 t_elements	*make_elements(void);
 t_param		*make_param(void);
 t_enemy		*make_enemy(void *mlx);
 void		print_map(t_param *param);
 void		print_map2(t_param *param);
+void		slime_check(t_param *param, int i, int k);
+int 		*slime_position(t_param *param);
+void		draw_slime(t_param *param, void *map, void *slime);
+int			nothing(t_param *param);
 #endif
