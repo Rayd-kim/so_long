@@ -13,6 +13,7 @@ FILE = make_map.c \
 FILE_B = ./bonus/make_map_bonus.c \
 		./bonus/so_long_bonus.c \
 		./bonus/error_bonus.c \
+		./bonus/error_bonus_2.c \
 		./bonus/make_struct_bonus.c \
 		./bonus/slime_bonus.c \
 		./bonus/print_map_bonus.c \
@@ -33,6 +34,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJECTS)
 	@$(MAKE) -C ./libft all
+	@$(MAKE) -C ./mlx all
 	$(CC) -L./libft -lft -L./mlx -lmlx -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 
 %.o : %.c
@@ -44,6 +46,7 @@ bonus : $(OBJS_B)
 clean :
 	rm -rf $(OBJS)
 	@$(MAKE) -C ./libft clean
+	@$(MAKE) -C ./mlx clean
 	rm -rf $(OBJS_B)
 
 fclean : clean

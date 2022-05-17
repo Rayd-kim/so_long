@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/17 18:24:56 by youskim           #+#    #+#             */
+/*   Updated: 2022/05/17 19:02:32 by youskim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include <mlx.h>
+# include "./mlx/mlx.h"
 # include <stdlib.h>
 # include "./gnl/get_next_line.h"
 # include "./libft/libft.h"
@@ -32,7 +44,6 @@ typedef struct s_image
 	void	*player;
 	void	*exit;
 	void	*goal;
-	void	*exit_open;
 	int		x;
 	int		y;
 }		t_image;
@@ -48,16 +59,13 @@ typedef struct s_param
 }		t_param;
 
 void		make_map(char *argv, t_param *param);
-char		**check_map(int fd, t_elements *elements);
-t_image		*open_image(void *mlx_ptr);
-t_elements	*make_elements(void);
+void		open_image(void *mlx_ptr, t_param *param);
+t_elements	*make_elements(t_param *param);
 t_param		*make_param(void);
 void		print_map(t_param *param);
 void		print_map2(t_param *param);
-
-void		error_stdin(void);
-void		error_null(void);
-void		error_component(void);
-void		error_rectangular(void);
-void		error_wall(void);
+void		change_exit(t_param *param);
+void		error_stdin(t_param *param);
+void		error_message(char *str, t_param *param);
+void		free_param(t_param *param);
 #endif

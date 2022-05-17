@@ -6,7 +6,7 @@
 /*   By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 13:21:58 by youskim           #+#    #+#             */
-/*   Updated: 2022/05/10 18:16:14 by youskim          ###   ########.fr       */
+/*   Updated: 2022/05/17 20:00:11 by youskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	check_position(int keycode, t_param *param, int	*x, int *y)
 		param->map[*y][*x] = '0';
 		return (3);
 	}
-	else if (param->map[*y][*x] == '0')
+	else if (param->map[*y][*x] == '0' && (*x != param->p_xy[0] \
+	|| *y != param->p_xy[1]))
 		return (3);
 	return (0);
 }
@@ -65,7 +66,7 @@ int	key_press(int keycode, t_param *param)
 	y = param->p_xy[1];
 	check = check_position(keycode, param, &x, &y);
 	if (param->elements->c == 0)
-		param->img->exit = param->img->exit_open;
+		change_exit (param);
 	if (check == 3)
 		key_press2(param, x, y, &count);
 	else if (check == 2)
@@ -88,7 +89,7 @@ int	key_press(int keycode, t_param *param)
 
 int	program_exit(t_param *param)
 {
-	mlx_destroy_window(param->mlx_ptr, param->win_ptr);
+	free_param(param);
 	exit(0);
 }
 
@@ -97,17 +98,23 @@ int	main(int argc, char *argv[])
 	t_param		*param;
 
 	if (argc != 2)
-		error_stdin();
+		first_error();
 	param = make_param();
-	param->elements = make_elements();
+	param->elements = make_elements(param);
 	make_map(argv[argc - 1], param);
 	param->mlx_ptr = mlx_init();
+	if (param->mlx_ptr == NULL)
+		error_message ("MLX init error\n", param);
 	param->win_ptr = mlx_new_window(param->mlx_ptr, \
-	param->elements->map_w * 64, param->elements->map_h * 64, argv[argc - 1]);
-	param->img = open_image(param->mlx_ptr);
-	param->enemy = make_enemy(param->mlx_ptr);
+	param->elements->map_w * 64, param->elements->map_h * 64, argv[1]);
+	if (param->win_ptr == NULL)
+		error_message ("MLX_window error\n", param);
+	open_image(param->mlx_ptr, param);
+	make_enemy(param->mlx_ptr, param);
+
 	param->elements->slime_x = slime_position(param);
 	param->elements->slime_y = slime_position(param);
+	
 	print_map(param);
 	mlx_hook(param->win_ptr, 2, 0, &key_press, param);
 	mlx_hook(param->win_ptr, 17, 0, &program_exit, param);

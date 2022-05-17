@@ -15,7 +15,7 @@ int *slime_position(t_param *param)
 
 	ret = (int *)malloc(sizeof(int) * param->elements->s);
 	if (ret == 0)
-		error_stdin();
+		error_stdin(param);
 	ft_memset(ret, 0, param->elements->s * sizeof(int));
 	return (ret);
 }
